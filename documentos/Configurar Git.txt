@@ -1,0 +1,21 @@
+para criar novo:
+cd C:\trabalho
+git init
+
+para clonar:
+cd c:\
+git clone https://matheusmahl@bitbucket.org/matheusmahl/trabalho.git
+git pull origin master
+
+
+git config --global user.name "Matheus Mahl"
+git config --global user.email matheusmahl95@gmail.com
+
+
+git add *
+git commit -m 'comentario'
+git push -u origin master
+git pull    {update}
+
+git reset --hard {Limpa working base}
+git clean -d -f {Limpa arquivos novos também}

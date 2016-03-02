@@ -1,0 +1,25 @@
+Lista de Comandos: 			CTRL+SHIFT+P
+Navegar entre os arquivos:  Ctrl + P
+Layout de 2 colunas: 		Alt + Shift + 2
+Modo de distração livre: 	Shift + F11
+Find: 						Ctrl + F
+Find / Replace: 			Ctrl + H
+Find / Where / Replace: 	Ctrl + Shift + H
+Indentação à esquerda: 		Ctrl + [
+Indentação à direita: 		Ctrl + ]
+Comentário: 				Ctrl + / ou Ctrl+;
+Multi-select: 				Ctrl pressionado + Clique em várias linhas
+Code Folding – Minimiza Bloco: 		Ctrl + Shift + [
+Code Folding - Maximiza Bloco: 		Ctrl + Shift + ]
+Code Folding – Minimiza Atributos: 	Ctrl + K + Ctrl + J
+Code Folding – Maximiza Atributos: 	Ctrl + K + Ctrl + 1
+Console: 	Ctrl + `
+Menu: 		Ctrl + Shift + P
+Haiku: 		Ctrl + Alt + Enter
+Prefixr: 	Ctrl + Alt + X
+JSHint: 	Ctrl + J
+JSMinifier: Ctrl + Alt + M
+
+Deletar linha: 	 Ctrl + Shift + K
+Duplicar linha:  Ctrl + Shift + D
+Troca de linhas: Ctrl + Shift + Seta (cima ou baixo)
