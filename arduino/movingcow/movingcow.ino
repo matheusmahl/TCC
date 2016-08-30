@@ -8,6 +8,9 @@
 //Biblioteca para controle do relógio real.
 #include <virtuabotixRTC.h> 
 
+//Biblioteca para controle da porta serial do módulo Blutooth
+#include <SoftwareSerial.h>
+
 /*
  * SD card attached to SPI bus as follows:
  ** MOSI - pin 11
@@ -31,14 +34,22 @@ const int chipSelect = 4;
 // myRTC(clock, data, rst)
 virtuabotixRTC myRTC(6, 7, 8);
 
+//http://www.embarcados.com.br/modulos-bluetooth-hc-05-e-hc-06/
+SoftwareSerial BTSerial(9, 10); // RX | TX
+
+int numeroArquivo = 0;
+String dataSemFormato = "01012000"; // DD/MM/AAAA
+String horaSemFormato = "000000"; // 00:00:00
+
 void setup()
 {
   Serial.begin(9600);
+  BTSerial.begin(38400);
 
   // Informacoes iniciais de data e hora
   // Apos setar as informacoes, comente a linha abaixo
   // (segundos, minutos, hora, dia da semana, dia do mes, mes, ano)
-  myRTC.setDS1302Time(00, 58, 23, 2, 17, 11, 2014);
+  //myRTC.setDS1302Time(00, 4, 22, 2, 29, 8, 2016);
 
   pinMode(13, OUTPUT);
   
@@ -55,24 +66,56 @@ void setup()
     ErrorLoop(1);
   }
 
-
+  numeroArquivo = VerificarArquivoDiaAtual();
  
 }
 
 void loop()
 {
+  if (BTSerial.available()) {
+    CopiarArquivos();
+  }
   //Variaveis para armazenar valores dos sensores
   int AcX,AcY,AcZ,GyX,GyY,GyZ;
   double Temp;
 
  // Le as informacoes do CI
- // myRTC.updateTime(); 
+  myRTC.updateTime(); 
  // myRTC.dayofmonth
  // myRTC.month
  // myRTC.year
  // myRTC.hours
  // myRTC.minutes
  // myRTC.seconds
+
+  Serial.print(", ");
+  Serial.print(myRTC.dayofmonth);
+  Serial.print("/");
+  Serial.print(myRTC.month);
+  Serial.print("/");
+  Serial.print(myRTC.year);
+  Serial.print("  ");
+   Serial.print("Hora : ");
+  // Adiciona um 0 caso o valor da hora seja <10
+  if (myRTC.hours < 10)
+  {
+    Serial.print("0");
+  }
+  Serial.print(myRTC.hours);
+  Serial.print(":");
+  // Adiciona um 0 caso o valor dos minutos seja <10
+  if (myRTC.minutes < 10)
+  {
+    Serial.print("0");
+  }
+  Serial.print(myRTC.minutes);
+  Serial.print(":");
+  // Adiciona um 0 caso o valor dos segundos seja <10
+  if (myRTC.seconds < 10)
+  {
+    Serial.print("0");
+  }
+  Serial.println(myRTC.seconds);
 
   Wire.beginTransmission(MPU);
   Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
@@ -145,4 +188,21 @@ void ErrorLoop(int tipoErro){
     delay(Delay2);              // wait for a second 
   }
 }
+
+void CopiarArquivos(){
+
+  
+}
+
+int VerificarArquivoDiaAtual(){
+   //Verificar se existe arquivo do dia atual. Se tiver, buscar o último numero e gravar em numeroArquivo.
+   File root;
+   //Abre diretorio raiz
+   root = SD.open("/");
+   root.rewindDirectory();
+   File arquivo = root.openNextFile();
+   String nome = arquivo.name();
+  
+}
+
 
