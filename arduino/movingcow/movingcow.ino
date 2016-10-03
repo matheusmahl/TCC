@@ -38,10 +38,10 @@ virtuabotixRTC myRTC(6, 7, 8);
 //http://www.embarcados.com.br/modulos-bluetooth-hc-05-e-hc-06/
 SoftwareSerial BTSerial(9, 10); // RX | TX
 
-int numeroArquivo = 0;
-int numeroRegistro = 0;
 String dataSemFormato = "01012000"; // DD/MM/AAAA
 String horaSemFormato = "000000"; // 00:00:00
+
+const int delayLeitura = 2000;
 
 void setup()
 {
@@ -65,20 +65,18 @@ void setup()
 
   // see if the card is present and can be initialized:
   if (!SD.begin(chipSelect)) {
+    Serial.println("Erro no cartao");
     ErrorLoop(1);
   }
+  Serial.println("Cartao aberto");
 
-  VerificarArquivoDiaAtual(); //Atualiza o valor de numeroArquivo;
-  numeroRegistro = 0;
- 
+  VerificarArquivoDiaAtual(); //Atualiza o valor de numeroArquivo; 
 }
 
 void loop()
 {
   Serial.println("loop");
-  if (BTSerial.available()) {
-    CopiarArquivos();
-  }
+  
   //Variaveis para armazenar valores dos sensores
   int AcX,AcY,AcZ;//GyX,GyY,GyZ;
  // double Temp;
@@ -120,8 +118,6 @@ void loop()
 
   String leitura = "";
 
-  leitura.concat(numeroRegistro);
-  leitura.concat("|");
   leitura.concat(dataSemFormato);
   leitura.concat("|");
   leitura.concat(horaSemFormato);
@@ -139,33 +135,37 @@ void loop()
 
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
-  String arquivo = dataSemFormato + "_" + CompletarComZerosEsquerda(numeroArquivo, 3) + ".TXT";
+  // Nome do arquivo não deve conter mais de 8 caracteres.(Ex: MEUTEXTO.TXT).
+  String arquivo = dataSemFormato + ".TXT";
   Serial.println(arquivo);
   File dataFile = SD.open(arquivo, FILE_WRITE);
+
 
   // if the file is available, write to it:
   if (dataFile) {
     dataFile.println(leitura);
     dataFile.close();
-    numeroRegistro += 1;
     // print to the serial port too:
-    //Serial.println(leitura);
+    Serial.println(leitura);
   }
 
+  CopiarArquivos();
   
-
   //Aguarda 10 s e reinicia o processo
-  delay(10000);
+  delay(delayLeitura);
 }
 
 
 void ErrorLoop(int tipoErro){
-  int Delay1 = 1000;
-  int Delay2 = 1000;
+  int Delay1 = 10000;
+  int Delay2 = 100;
   
   if (tipoErro = 1){
     Delay1 = 1000;
     Delay2 = 500; 
+  } else if (tipoErro = 2){
+    Delay1 = 500;
+    Delay2 = 2000;
   }
   
   while (true){
@@ -177,8 +177,10 @@ void ErrorLoop(int tipoErro){
 }
 
 void CopiarArquivos(){
-
-  
+  if (BTSerial.available()) {
+    delay(10); // The DELAY!  
+    BTSerial.write("Envio de informacoes"); 
+  }
 }
 
 String CompletarComZerosEsquerda(int valor, int quantidadeZeros){
@@ -199,7 +201,7 @@ String CompletarComZerosEsquerda(int valor, int quantidadeZeros){
 }
 
 void VerificarArquivoDiaAtual(){
-  myRTC.updateTime();
+/*  myRTC.updateTime();
    
   String dataAtual = "";
   dataAtual.concat(CompletarComZerosEsquerda(myRTC.dayofmonth, 2));
@@ -219,19 +221,14 @@ void VerificarArquivoDiaAtual(){
       return;
     } else {
       String nome = arquivo.name();
-      Serial.println(nome.substring(0,7));
-      Serial.println(nome.substring(9,11));
+      Serial.println(nome.substring(0,8));
       if (nome.substring(0,7) == dataAtual){
-        indiceArquivo = nome.substring(9,11);
-        
-        int numero = indiceArquivo.toInt();
-        if(numeroArquivo < numero)
-          numeroArquivo = numero;        
+        indiceArquivo = nome.substring(9,11);    
       }
       arquivo = root.openNextFile();  
     }
    }
-  Serial.println(numeroArquivo);
+  Serial.println(numeroArquivo);*/
 }
 
 
