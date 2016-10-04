@@ -42,10 +42,11 @@ String dataSemFormato = "01012000"; // DD/MM/AAAA
 String horaSemFormato = "000000"; // 00:00:00
 
 const int delayLeitura = 2000;
+#define ARRAYSIZE 10
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   BTSerial.begin(38400);
 
   // Informacoes iniciais de data e hora
@@ -151,7 +152,7 @@ void loop()
 
   CopiarArquivos();
   
-  //Aguarda 10 s e reinicia o processo
+  //Aguarda e reinicia o processo
   delay(delayLeitura);
 }
 
@@ -178,9 +179,15 @@ void ErrorLoop(int tipoErro){
 
 void CopiarArquivos(){
   if (BTSerial.available()) {
-    delay(10); // The DELAY!  
-    BTSerial.write("Envio de informacoes"); 
+    Serial.println("disponivel");
   }
+
+char myString[] = "EH NOIX QUE VOA BRUXAO";
+
+ for (int i = 0; i < sizeof(myString) - 1; i++){
+  delay(10); // The DELAY!  
+  BTSerial.print(myString[i]); 
+ }
 }
 
 String CompletarComZerosEsquerda(int valor, int quantidadeZeros){

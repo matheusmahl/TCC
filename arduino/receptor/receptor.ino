@@ -11,26 +11,28 @@ void setup() {
   Serial.println("Goodnight moon!");
 
   // set the data rate for the SoftwareSerial port
-  mySerial.begin(9600);
+  mySerial.begin(38400);
  // mySerial.println("Hello, world?");
 }
 void loop() {
  // Read device output if available.  
   if (mySerial.available()) 
   {  
-     while(mySerial.available()) 
-     { // While there is more to be read, keep reading.  
-       command += (char)mySerial.read();  
+    Serial.println("MySerial.available = true");
+     while(mySerial.available() > 0) 
+     { 
+      // While there is more to be read, keep reading. 
+       
+       command += (char)mySerial.read();       
+       delay(20); 
      }  
-   Serial.println(command);  
+     Serial.println(command);
+   
    command = ""; // No repeats  
   }  
-  
-  // Read user input if available.  
-  if (Serial.available())
-  {  
-    delay(10); // The DELAY!  
-    mySerial.write(Serial.read());  
-  }  
-
+  else
+  {
+    Serial.println("MySerial.available = false");
+  }
+  delay(1000);
 }
