@@ -134,6 +134,8 @@ void loop()
  // leitura.concat(GyZ);
  // leitura.concat(Temp);
 
+ leitura.concat("N"); //Indica o final da linha
+
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
   // Nome do arquivo não deve conter mais de 8 caracteres.(Ex: MEUTEXTO.TXT).
@@ -178,16 +180,72 @@ void ErrorLoop(int tipoErro){
 }
 
 void CopiarArquivos(){
-  if (BTSerial.available()) {
-    Serial.println("disponivel");
+ Serial.println("INICIO");
+  char flag = 'N';
+  if (BTSerial.available() > 0){
+    flag = BTSerial.read();
   }
+ // if (flag <> "N"){
+    //enviar blocos e verificar flag...
+ // }
+  File dir = SD.open("/");
+  dir.rewindDirectory();
+  while (true){
+    File entry =  dir.openNextFile();
+    if (!entry) {
+      break;
+    }
 
-char myString[] = "EH NOIX QUE VOA BRUXAO";
+    String arquivo = entry.name();
+    Serial.println(arquivo.substring(0,8));
+    if (!(arquivo.substring(0,8) == dataSemFormato)){
+      while (entry.available()){
+        String linha = "";
+        char inputChar = 0;
+        while (inputChar != 'N'){
+          inputChar = entry.read(); // Gets one byte from serial buffer
+                   
+          if (CaractereValido(inputChar)){
+             linha.concat(String(inputChar)); // Store it          
+          } else {
+              inputChar = 'N';           
+          }         
+        }      
+       // linha = entry.read();
+      
+        if (linha != ""){
+          Serial.println("linha: " + linha);
+          
+          BTSerial.print(linha);
+          delay(1000);
+        }
+      }
+      entry.close();
+      break;
+    }
+    entry.close();
+  }
+  dir.close();
 
- for (int i = 0; i < sizeof(myString) - 1; i++){
+
+//char myString[] = "EH NOIX QUE VOA BRUXAO";
+
+// for (int i = 0; i < sizeof(myString) - 1; i++){
   delay(10); // The DELAY!  
-  BTSerial.print(myString[i]); 
- }
+  BTSerial.print("FINAL"); 
+ //}
+}
+
+boolean CaractereValido(char element) {
+
+char lista[13] = {'1','2','3','4','5','6','7','8','9','0','-','|','N'};
+  
+for (int i = 0; i < 13; i++) {
+  if (lista[i] == element) {
+    return true;
+  }
+}
+return false;
 }
 
 String CompletarComZerosEsquerda(int valor, int quantidadeZeros){

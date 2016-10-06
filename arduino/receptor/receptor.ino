@@ -18,13 +18,13 @@ void loop() {
  // Read device output if available.  
   if (mySerial.available()) 
   {  
-    Serial.println("MySerial.available = true");
+    //Serial.println("MySerial.available = true");
      while(mySerial.available() > 0) 
      { 
       // While there is more to be read, keep reading. 
        
        command += (char)mySerial.read();       
-       delay(20); 
+       delay(10); 
      }  
      Serial.println(command);
    
@@ -32,7 +32,7 @@ void loop() {
   }  
   else
   {
-    Serial.println("MySerial.available = false");
+    //Serial.println("MySerial.available = false");
   }
-  delay(1000);
+ // delay(1000);
 }
