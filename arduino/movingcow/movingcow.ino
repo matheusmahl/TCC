@@ -181,13 +181,16 @@ void ErrorLoop(int tipoErro){
 
 void CopiarArquivos(){
  Serial.println("INICIO");
-  char flag = 'N';
+  char flag = 'L';
   if (BTSerial.available() > 0){
     flag = BTSerial.read();
   }
- // if (flag <> "N"){
+  if (flag != 'L'){
+    exit;
     //enviar blocos e verificar flag...
- // }
+  }
+  else
+  {
   File dir = SD.open("/");
   dir.rewindDirectory();
   while (true){
@@ -217,7 +220,7 @@ void CopiarArquivos(){
           Serial.println("linha: " + linha);
           
           BTSerial.print(linha);
-          delay(1000);
+          delay(2000);
         }
       }
       entry.close();
@@ -234,6 +237,7 @@ void CopiarArquivos(){
   delay(10); // The DELAY!  
   BTSerial.print("FINAL"); 
  //}
+  }
 }
 
 boolean CaractereValido(char element) {
