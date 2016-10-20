@@ -26,7 +26,8 @@
 
 //Endereco I2C do MPU6050
 const int MPU=0x68;
-int ledPinErro = 2;
+
+int ledPinErro = 5;
 
 //CS - ChipSelect
 const int chipSelect = 4; 
@@ -36,7 +37,7 @@ const int chipSelect = 4;
 virtuabotixRTC myRTC(6, 7, 8);
 
 //http://www.embarcados.com.br/modulos-bluetooth-hc-05-e-hc-06/
-SoftwareSerial BTSerial(9, 10); // RX | TX
+//SoftwareSerial BTSerial(9, 10); // RX | TX
 
 String dataSemFormato = "01012000"; // DD/MM/AAAA
 String horaSemFormato = "000000"; // 00:00:00
@@ -47,14 +48,14 @@ const int delayLeitura = 2000;
 void setup()
 {
   Serial.begin(115200);
-  BTSerial.begin(38400);
+//  BTSerial.begin(38400);
 
   // Informacoes iniciais de data e hora
   // Apos setar as informacoes, comente a linha abaixo
   // (segundos, minutos, hora, dia da semana, dia do mes, mes, ano)
-  //myRTC.setDS1302Time(00, 4, 22, 2, 29, 8, 2016);
+ // myRTC.setDS1302Time(00, 7, 22, 4, 19, 10, 2016);
 
-  pinMode(ledPinErro, OUTPUT);
+ // pinMode(ledPinErro, OUTPUT);
   
   Wire.begin();
   Wire.beginTransmission(MPU);
@@ -71,7 +72,7 @@ void setup()
   }
   Serial.println("Cartao aberto");
 
-  VerificarArquivoDiaAtual(); //Atualiza o valor de numeroArquivo; 
+ // VerificarArquivoDiaAtual(); //Atualiza o valor de numeroArquivo; 
 }
 
 void loop()
@@ -152,7 +153,7 @@ void loop()
     Serial.println(leitura);
   }
 
-  CopiarArquivos();
+ // CopiarArquivos();
   
   //Aguarda e reinicia o processo
   delay(delayLeitura);
@@ -180,7 +181,7 @@ void ErrorLoop(int tipoErro){
 }
 
 void CopiarArquivos(){
- Serial.println("INICIO");
+/* Serial.println("INICIO");
   char flag = 'L';
   if (BTSerial.available() > 0){
     flag = BTSerial.read();
@@ -237,7 +238,7 @@ void CopiarArquivos(){
   delay(10); // The DELAY!  
   BTSerial.print("FINAL"); 
  //}
-  }
+  }*/
 }
 
 boolean CaractereValido(char element) {
