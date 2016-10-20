@@ -39,11 +39,11 @@ void loop()
       String webpage = "<head><meta http-equiv=""refresh"" content=""3"">";
       webpage += "</head><h1><u>ESP8266 - Web Server</u></h1><h2>Porta";
       webpage += "Digital 8: ";
-      int a = digitalRead(8);
-      webpage += a;
+     // int a = digitalRead(8);
+     // webpage += a;
       webpage += "<h2>Porta Digital 9: ";
-      int b = digitalRead(9);
-      webpage += b;
+    //  int b = digitalRead(9);
+    //  webpage += b;
       webpage += "</h2>";
  
       String cipSend = "AT+CIPSEND=";
