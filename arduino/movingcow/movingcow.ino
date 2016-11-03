@@ -24,12 +24,32 @@
  ** RST - 8
 */
 
+/*
+Pin 0 - Nada
+Pin 1 - Nada
+Pin 2 - Wifi RX
+Pin 3 - Nada / LedErro
+Pin 4 - CS CardReader
+Pin 5 - Wifi TX
+Pin 6 - Clk RTC Module
+Pin 7 - Dat RTC Module
+Pin 8 - Rst RTC Module
+Pin 9 - Nada
+Pin 10 - Nada
+Pin 11 - MOSI CardReader
+Pin 12 - MISO CardReader
+Pin 13 - CLK CardReader
+
+Analog 4 - SDA Acelerômetro
+Analog 5 - SCL Acelerômetro
+*/
+
 //Endereco I2C do MPU6050
 const int MPU=0x68;
 
-int ledPinErro = 5;
+int ledPinErro = 3;
 
-//CS - ChipSelect
+//CS - ChipSelect do CardReader
 const int chipSelect = 4; 
 
 // Determina os pinos ligados ao modulo
@@ -38,6 +58,9 @@ virtuabotixRTC myRTC(6, 7, 8);
 
 //http://www.embarcados.com.br/modulos-bluetooth-hc-05-e-hc-06/
 //SoftwareSerial BTSerial(9, 10); // RX | TX
+
+//wifi serial
+SoftwareSerial WifiSerial(2, 5); // RX | TX
 
 String dataSemFormato = "01012000"; // DD/MM/AAAA
 String horaSemFormato = "000000"; // 00:00:00
@@ -55,7 +78,7 @@ void setup()
   // (segundos, minutos, hora, dia da semana, dia do mes, mes, ano)
  // myRTC.setDS1302Time(00, 7, 22, 4, 19, 10, 2016);
 
- // pinMode(ledPinErro, OUTPUT);
+  pinMode(ledPinErro, OUTPUT);
   
   Wire.begin();
   Wire.beginTransmission(MPU);
