@@ -4,7 +4,7 @@
 #include <SoftwareSerial.h>
  
 //RX pino 2, TX pino 3
-SoftwareSerial esp8266(2, 3);
+SoftwareSerial esp8266(2, 5);
  
 #define DEBUG true
  
@@ -15,7 +15,7 @@ void setup()
  
   sendData("AT+RST\r\n", 2000, DEBUG); // rst
   // Conecta a rede wireless
-  sendData("AT+CWJAP=\"Mahl_202\",\"agoratemsenha\"\r\n", 2000, DEBUG);
+  sendData("AT+CWJAP=\"Mahl_202\",\"mudeiasenha\"\r\n", 2000, DEBUG);
   delay(3000);
   sendData("AT+CWMODE=1\r\n", 1000, DEBUG);
   // Mostra o endereco IP
